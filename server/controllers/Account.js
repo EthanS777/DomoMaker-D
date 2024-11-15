@@ -4,10 +4,54 @@ const { Account } = models;
 
 const loginPage = (req, res) => res.render('login');
 
+const changePassPage = (req, res) => res.render('changePass');
+
 const logout = (req, res) => {
   // session.destroy(): removes user's session, no longer logged in
   req.session.destroy();
   res.redirect('/');
+};
+
+// change pass: implement change password system
+const changePass = async (req, res) => {
+  const { username, oldPass, newPass } = req.body;
+
+  try {
+    // find user's account by username
+    const user = await Account.findOne({ username });
+
+    if (!user) {
+      return res.status(404).json({ error: 'Account not found' });
+    }
+
+    // authenticate, check if old password is correct
+    const isAuth = await new Promise((resolve) => {
+      Account.authenticate(username, oldPass, (err, doc) => {
+        if (err || !doc) {
+          return resolve(false);
+        }
+        return resolve(true);
+      });
+    });
+
+    if (!isAuth) {
+      return res.status(400).json({ error: 'Old password is incorrect' });
+    }
+
+    // if correct, hash new password
+    const hashedPassword = await Account.generateHash(newPass);
+
+    // save/update new password
+    user.password = hashedPassword;
+    await user.save();
+
+    // log out after submitting form, tell user to log in again with NEW creds
+    req.session.destroy();
+    return res.json({ redirect: '/' });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: 'An unexpected error occurred' });
+  }
 };
 
 const login = (req, res) => {
@@ -64,4 +108,6 @@ module.exports = {
   login,
   logout,
   signup,
+  changePass,
+  changePassPage,
 };

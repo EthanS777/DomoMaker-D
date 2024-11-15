@@ -42,5 +42,5 @@ const handleError = (message) => {
   module.exports = {
     handleError,
     sendPost,
-    hideError
+    hideError,
   };

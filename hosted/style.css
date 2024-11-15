@@ -50,7 +50,7 @@ nav:nth-child(1) {
 .domoForm {
     border: 2px solid #338acc;
     height: 35px;
-    width: 700px;
+    width: 1000px;
     margin-top:0px;
     padding-top:10px;
     background-color: #55acee;
@@ -69,6 +69,10 @@ nav:nth-child(1) {
 
 .domoForm input[type=text] {
     float:left;
+}
+
+.domoForm input[type=number] {
+    float: left;
 }
 
 .makeDomoSubmit {
@@ -262,4 +266,22 @@ h3.domoAge {
 
 .domo:last-child {
     margin-bottom:10px;
+}
+
+#passChange {
+    background-color: #bfb8e3;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(58, 58, 127, 0.584);
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+    margin-left: 35%;
+    margin-top: 5%;
+}
+
+#change-pass-form {
+   display: flex;
+   flex-direction: column;
+   gap: 1rem;
 }
